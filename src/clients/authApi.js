@@ -3,14 +3,12 @@ import axiosClient from './axiosClient';
 
 const authApi = {
   register: async data => {
-    const url = '/register';
-
-    return await axiosClient.post(url, data);
+    console.log('data register', data);
+    return await axiosClient.post('/register', data);
   },
   login: async data => {
-    const url = '/login';
-    Alert.alert(JSON.stringify(data));
-    return await axiosClient.post(url, data);
+    console.log('data axios ', data);
+    return await axiosClient.post('/login', data);
   },
 };
 

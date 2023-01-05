@@ -41,29 +41,25 @@ const LoginScreen = ({navigation}) => {
   });
 
   const handleOnSubmit = async data => {
-    Alert.alert(JSON.stringify(data));
-    // try {
-    //   await authApi.login(data);
-    //   ToastAndroid.showWithGravityAndOffset(
-    //     'Đăng nhập thành công!',
-    //     ToastAndroid.LONG,
-    //     ToastAndroid.TOP,
-    //     25,
-    //     50,
-    //   );
-    //   reset({email: '', password: ''});
-    //   navigation.navigate('RegisterScreen');
-    // } catch (error) {
-    //   Alert.alert(JSON.stringify(error));
-
-    //   ToastAndroid.showWithGravityAndOffset(
-    //     'Đăng nhập thất bại!',
-    //     ToastAndroid.LONG,
-    //     ToastAndroid.TOP,
-    //     25,
-    //     50,
-    //   );
-    // }
+    try {
+      const res = await authApi.login(data);
+      ToastAndroid.showWithGravityAndOffset(
+        'Đăng nhập tài khoản thành công',
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50,
+      );
+      navigation.navigate('HomeScreen');
+    } catch (error) {
+      ToastAndroid.showWithGravityAndOffset(
+        error.msg || 'Đăng nhập tài khoản không thành công',
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50,
+      );
+    }
   };
 
   return (
