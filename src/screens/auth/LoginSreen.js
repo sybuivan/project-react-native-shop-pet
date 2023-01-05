@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
+import {Controller, useForm} from 'react-hook-form';
 import {
+  Alert,
   Image,
   SafeAreaView,
   StyleSheet,
@@ -7,98 +9,128 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ToastAndroid,
 } from 'react-native';
-import RadioForm, {
-  RadioButton,
-  RadioButtonInput,
-  RadioButtonLabel,
-} from 'react-native-simple-radio-button';
 
-const RadioButtonGroup = ({radio_props}) => {
-  const [selected, setSelector] = React.useState(0);
-  return (
-    <RadioForm formHorizontal={true} animation={true}>
-      {/* To create radio buttons, loop through your array of options */}
-      {radio_props.map((obj, i) => (
-        <RadioButton labelHorizontal={true} key={i} style={{marginRight: 15}}>
-          {/*  You can set RadioButtonLabel before RadioButtonInput */}
-          <RadioButtonInput
-            obj={obj}
-            index={i}
-            isSelected={selected === obj.value}
-            buttonOuterColor={selected === obj.value ? '#2196f3' : '#000'}
-            borderWidth={1}
-            buttonInnerColor={'#e74c3c'}
-            buttonSize={20}
-            buttonOuterSize={20}
-            buttonStyle={{}}
-            buttonWrapStyle={{marginLeft: 5}}
-          />
-          <RadioButtonLabel
-            obj={obj}
-            index={i}
-            labelHorizontal={true}
-            labelStyle={{fontSize: 20, color: 'black'}}
-          />
-        </RadioButton>
-      ))}
-    </RadioForm>
-  );
-};
+import * as yup from 'yup';
+import logo from '../../assets/images/logo.jpg';
+import authApi from '../../clients/authApi';
+import COLOR from '../../constants/Color';
 
-const LoginScreen = () => {
-  const options = [
-    {label: 'Cá nhân', value: 0},
-    {label: 'Garana', value: 1},
-  ];
-  const [text, onChangeText] = React.useState('');
-  const [number, onChangeNumber] = React.useState('');
+const LoginScreen = ({navigation}) => {
+  // const schema = yup.object().shape({
+  //   email: yup
+  //     .string()
+  //     .required('Please enter your email.')
+  //     .email('Please enter a valid your address email'),
+  //   password: yup.string().required('Please enter your password'),
+  // });
+
+  const {
+    handleSubmit,
+    control,
+    reset,
+
+    formState: {errors},
+  } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    mode: 'onChange',
+  });
+
+  const handleOnSubmit = async data => {
+    Alert.alert(JSON.stringify(data));
+    // try {
+    //   await authApi.login(data);
+    //   ToastAndroid.showWithGravityAndOffset(
+    //     'Đăng nhập thành công!',
+    //     ToastAndroid.LONG,
+    //     ToastAndroid.TOP,
+    //     25,
+    //     50,
+    //   );
+    //   reset({email: '', password: ''});
+    //   navigation.navigate('RegisterScreen');
+    // } catch (error) {
+    //   Alert.alert(JSON.stringify(error));
+
+    //   ToastAndroid.showWithGravityAndOffset(
+    //     'Đăng nhập thất bại!',
+    //     ToastAndroid.LONG,
+    //     ToastAndroid.TOP,
+    //     25,
+    //     50,
+    //   );
+    // }
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.blockBackground} />
       <View style={styles.boxContent}>
         <View style={styles.boxLogo}>
-          <Image
-            source={{
-              uri: 'https://farm5.staticflickr.com/4230/35108607076_fc9c72a7f4_o.png',
-            }}
-            style={styles.logo}
-          />
+          <Image source={logo} style={styles.logo} />
         </View>
 
         <View style={styles.boxContentInput}>
-          <View style={styles.boxRadio}>
-            <RadioButtonGroup radio_props={options} />
-          </View>
           <View>
             <SafeAreaView>
               <View style={styles.boxInput}>
-                <Text>Số điện thoại</Text>
-                <TextInput
-                  style={styles.input}
-                  onChangeText={onChangeText}
-                  value={text}
-                  keyboardType="number-pad"
+                <Text>Email</Text>
+                <Controller
+                  control={control}
+                  errors={errors}
+                  render={({
+                    field: {onChange, onBlur, value},
+                    fieldState: {error, invalid},
+                  }) => (
+                    <>
+                      <TextInput
+                        style={styles.input}
+                        onBlur={onBlur}
+                        onChangeText={value => onChange(value)}
+                        value={value}
+                      />
+                    </>
+                  )}
+                  name="email"
+                  rules={{required: true}}
                 />
               </View>
               <View style={styles.boxInput}>
                 <Text>Nhập mật khẩu</Text>
-                <TextInput
-                  style={styles.input}
-                  onChangeText={onChangeNumber}
-                  value={text}
+
+                <Controller
+                  control={control}
+                  render={({
+                    field: {onChange, onBlur, value},
+                    fieldState: {error, invalid},
+                  }) => (
+                    <>
+                      <TextInput
+                        onBlur={onBlur}
+                        style={styles.input}
+                        onChangeText={value => onChange(value)}
+                        value={value}
+                        secureTextEntry={true}
+                      />
+                    </>
+                  )}
+                  name="password"
+                  rules={{required: true}}
                 />
               </View>
             </SafeAreaView>
           </View>
 
           <View>
-            <TouchableOpacity style={styles.buttonLogin}>
-              <Text style={styles.textButton}>Đăng nhâp</Text>
+            <TouchableOpacity
+              style={styles.buttonLogin}
+              onPress={handleSubmit(handleOnSubmit)}>
+              <Text style={styles.textButton}>Đăng nhập</Text>
             </TouchableOpacity>
-
-            <Text style={styles.forgetPass}>Quên mật khẩu?</Text>
           </View>
         </View>
       </View>
@@ -108,8 +140,10 @@ const LoginScreen = () => {
         <View>
           <Text style={styles.text}>Bạn chưa có tài khoản?</Text>
         </View>
-        <TouchableOpacity style={styles.buttonSign}>
-          <Text style={styles.textButton}>Đăng nhâp</Text>
+        <TouchableOpacity
+          style={styles.buttonSign}
+          onPress={() => navigation.navigate('RegisterScreen')}>
+          <Text style={styles.textButton}>Đăng ký</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -127,7 +161,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   blockBackground: {
-    backgroundColor: '#d9463e',
+    backgroundColor: COLOR.primary,
     height: 320,
   },
   boxContent: {
@@ -166,7 +200,7 @@ const styles = StyleSheet.create({
   },
   input: {padding: 10},
   buttonLogin: {
-    backgroundColor: '#d9463e',
+    backgroundColor: COLOR.primary,
     padding: 20,
     borderRadius: 10,
   },
@@ -177,7 +211,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   forgetPass: {
-    color: '#d9463e',
+    color: COLOR.primary,
     textAlign: 'right',
     paddingTop: 20,
     fontSize: 16,
@@ -192,13 +226,19 @@ const styles = StyleSheet.create({
     width: 400,
   },
   buttonSign: {
-    backgroundColor: '#d9463e',
+    backgroundColor: COLOR.primary,
     borderRadius: 5,
     paddingHorizontal: 20,
+    paddingVertical: 5,
   },
   text: {
     marginRight: 20,
-    fontSize: 16,
+    fontSize: 14,
+    color: COLOR.black,
+  },
+  errorText: {
+    fontSize: 10,
+    color: 'red',
   },
 });
 

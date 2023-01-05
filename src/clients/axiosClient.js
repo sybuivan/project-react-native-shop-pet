@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosClient = axios.create({
-  baseURL: 'http://localhost:8080/api',
+  baseURL: 'https://monashop-pet.onrender.com/api/',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -32,15 +32,6 @@ axiosClient.interceptors.response.use(
     // Do something with response error
     // const {msg} = error.response
 
-    const {data, config, status} = error.response;
-    console.log('error ', error.response);
-    const URLS = ['/register', '/login'];
-    if (URLS.includes(config.url) && status === 401) {
-      const messageError = data.msg || '';
-
-      console.log('messageError', messageError);
-      throw new Error(messageError);
-    }
     return Promise.reject(error);
   },
 );
