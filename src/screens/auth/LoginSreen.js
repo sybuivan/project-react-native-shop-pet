@@ -162,7 +162,6 @@ const styles = StyleSheet.create({
   },
   boxContent: {
     position: 'absolute',
-
     backgroundColor: '#fff',
     top: 90,
     width: 380,
