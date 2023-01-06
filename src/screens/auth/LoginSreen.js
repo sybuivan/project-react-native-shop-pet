@@ -16,6 +16,7 @@ import * as yup from 'yup';
 import logo from '../../assets/images/logo.jpg';
 import authApi from '../../clients/authApi';
 import COLOR from '../../constants/Color';
+import {PathName} from '../../constants/PathNameScreen';
 
 const LoginScreen = ({navigation}) => {
   // const schema = yup.object().shape({
@@ -50,7 +51,7 @@ const LoginScreen = ({navigation}) => {
         25,
         50,
       );
-      navigation.navigate('HomeScreen');
+      navigation.navigate(PathName.home);
     } catch (error) {
       ToastAndroid.showWithGravityAndOffset(
         error.msg || 'Đăng nhập tài khoản không thành công',
@@ -138,7 +139,7 @@ const LoginScreen = ({navigation}) => {
         </View>
         <TouchableOpacity
           style={styles.buttonSign}
-          onPress={() => navigation.navigate('RegisterScreen')}>
+          onPress={() => navigation.navigate(PathName.register)}>
           <Text style={styles.textButton}>Đăng ký</Text>
         </TouchableOpacity>
       </View>

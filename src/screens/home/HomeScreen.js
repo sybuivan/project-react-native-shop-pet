@@ -39,7 +39,7 @@ const dataCategory = [
   {
     image: require('../../assets/images/phu-kien.jpg'),
     title: 'Phụ kiện',
-    key: '4',
+    key: '5',
     id: 5,
   },
 ];

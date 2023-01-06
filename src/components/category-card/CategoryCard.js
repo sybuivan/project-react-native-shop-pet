@@ -1,15 +1,16 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import COLOR from '../../constants/Color';
+import {PathName} from '../../constants/PathNameScreen';
 import {ImageOverlay} from '../image-overlay/ImageOverlay';
 
 const CategoryCard = props => {
-  const {style, category, navigation, onPressCategory} = props;
+  const {style, category, navigation} = props;
   return (
     <>
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate('ListProductScreen', {
+          navigation.navigate(PathName.listProduct, {
             title: category.title,
             id: category.id,
           })

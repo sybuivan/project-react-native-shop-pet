@@ -12,7 +12,10 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {SvgXml} from 'react-native-svg';
 import productApi from '../../clients/productApi';
 import HeaderBack from '../../components/header-back/HeaderBack';
+import Loading from '../../components/loading/Loading';
 import COLOR from '../../constants/Color';
+import {PathName} from '../../constants/PathNameScreen';
+import formatPrice from '../../utils';
 
 const xml = `
 <svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" id="svg10041" viewBox="0 0 181.03 147.72" version="1.1">
@@ -103,9 +106,14 @@ const xml = `
 </svg>
 `;
 
-const Card = ({data}) => {
-  const onItemPress = index => {
-    navigation && navigation.navigate('ProductDetail');
+const Card = ({navigation, data, title}) => {
+  const onItemPress = idProduct => {
+    navigation &&
+      navigation.navigate(PathName.details, {
+        idProduct: idProduct,
+        name: data.name,
+        title: title,
+      });
   };
   return (
     <View
@@ -116,7 +124,7 @@ const Card = ({data}) => {
         borderStyle: 'solid',
         borderWidth: 1,
       }}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => onItemPress(data.idProduct)}>
         <ImageBackground
           style={styles.itemHeader}
           source={{uri: data.thumbnailUrl}}
@@ -141,7 +149,13 @@ const Card = ({data}) => {
           <Text>{data.categoryName}</Text>
         </View>
         <View style={styles.itemFooter}>
-          <Text>{data.price}</Text>
+          <Text
+            style={{
+              color: COLOR.primary,
+              fontWeight: '600',
+            }}>
+            {formatPrice(data.price)}
+          </Text>
           <TouchableOpacity style={styles.iconButton}>
             <SvgXml width={30} height={30} xml={xml} />
           </TouchableOpacity>
@@ -168,8 +182,6 @@ const ListProduct = ({navigation, route}) => {
     fetchData();
   }, []);
 
-  console.log(loading, dataProducts);
-
   return (
     <React.Fragment>
       <HeaderBack
@@ -178,12 +190,7 @@ const ListProduct = ({navigation, route}) => {
         onPressBack={name => navigation.navigate(name)}
       />
       {loading ? (
-        <View
-          style={{
-            marginTop: 20,
-          }}>
-          <Text>Đang tải dữ liệu...</Text>
-        </View>
+        <Loading />
       ) : (
         <SafeAreaView style={{flex: 1, margin: 5}}>
           <ScrollView>
@@ -195,7 +202,12 @@ const ListProduct = ({navigation, route}) => {
                 backgroundColor: COLOR.while,
               }}>
               {dataProducts?.map(data => (
-                <Card data={data} key={data.idProduct} />
+                <Card
+                  data={data}
+                  key={data.idProduct}
+                  navigation={navigation}
+                  title={title}
+                />
               ))}
             </View>
           </ScrollView>

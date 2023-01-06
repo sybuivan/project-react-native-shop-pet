@@ -14,6 +14,7 @@ import {Controller, useForm} from 'react-hook-form';
 import logo from '../../assets/images/logo.jpg';
 import authApi from '../../clients/authApi';
 import COLOR from '../../constants/Color';
+import {PathName} from '../../constants/PathNameScreen';
 
 const RegisterScreen = ({navigation}) => {
   const {
@@ -37,7 +38,7 @@ const RegisterScreen = ({navigation}) => {
         password: data.password,
         fullName: data.email,
       });
-      navigation.navigate('LoginScreen');
+      navigation.navigate(PathName.login);
       ToastAndroid.showWithGravityAndOffset(
         'Đăng ký tài khoản thành công',
         ToastAndroid.LONG,
