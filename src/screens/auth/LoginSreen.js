@@ -34,8 +34,8 @@ const LoginScreen = ({navigation}) => {
     formState: {errors},
   } = useForm({
     defaultValues: {
-      email: '',
-      password: '',
+      email: 'ngosontung@gmail.com',
+      password: 'ngosontung',
     },
     mode: 'onChange',
   });

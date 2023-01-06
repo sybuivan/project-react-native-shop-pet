@@ -1,9 +1,9 @@
 import axiosClient from './axiosClient';
 
 const productApi = {
-  getProductByCategory(params) {
+  async getProductByCategory(params) {
     const url = `/product/${params}`;
-    return axiosClient.get(url, params);
+    return await axiosClient.get(url, params);
   },
 
   getDetailProduct(id) {
@@ -19,8 +19,9 @@ const productApi = {
   getAllProductsByParams(params) {
     return axiosClient.get('/products/', {params: params});
   },
-  getAllProductsByCateogry(idCategory) {
-    return axiosClient.get(`/products/${idCategory}`);
+  async getAllProductsByCateogry(idCategory) {
+    // console.log('idCategory', idCategory);
+    return await axiosClient.get(`/products/${idCategory}`);
   },
 };
 
