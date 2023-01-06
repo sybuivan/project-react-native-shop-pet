@@ -10,13 +10,16 @@ import {
   TouchableOpacity,
   View,
   ToastAndroid,
+  ActivityIndicator,
 } from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import Toast from 'react-native-toast-message';
 
 import * as yup from 'yup';
 import logo from '../../assets/images/logo.jpg';
-import authApi from '../../clients/authApi';
 import COLOR from '../../constants/Color';
 import {PathName} from '../../constants/PathNameScreen';
+import {loginUser} from './authSlice';
 
 const LoginScreen = ({navigation}) => {
   // const schema = yup.object().shape({
@@ -26,6 +29,9 @@ const LoginScreen = ({navigation}) => {
   //     .email('Please enter a valid your address email'),
   //   password: yup.string().required('Please enter your password'),
   // });
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
 
   const {
     handleSubmit,
@@ -43,23 +49,22 @@ const LoginScreen = ({navigation}) => {
 
   const handleOnSubmit = async data => {
     try {
-      const res = await authApi.login(data);
-      ToastAndroid.showWithGravityAndOffset(
-        'Đăng nhập tài khoản thành công',
-        ToastAndroid.LONG,
-        ToastAndroid.TOP,
-        25,
-        50,
-      );
-      navigation.navigate(PathName.home);
+      setLoading(true);
+      dispatch(loginUser(data)).then(() => {
+        Toast.show({
+          type: 'success',
+          text1: 'Thông báo',
+          text2: 'Đăng nhập tài khoản thành công 👋',
+        });
+        navigation.navigate(PathName.home);
+        setLoading(false);
+      });
     } catch (error) {
-      ToastAndroid.showWithGravityAndOffset(
-        error.msg || 'Đăng nhập tài khoản không thành công',
-        ToastAndroid.LONG,
-        ToastAndroid.TOP,
-        25,
-        50,
-      );
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Đăng nhập tài khoản không thất bại 👋',
+      });
     }
   };
 
@@ -126,7 +131,9 @@ const LoginScreen = ({navigation}) => {
             <TouchableOpacity
               style={styles.buttonLogin}
               onPress={handleSubmit(handleOnSubmit)}>
-              <Text style={styles.textButton}>Đăng nhập</Text>
+              <Text style={styles.textButton}>
+                {loading ? <ActivityIndicator size="small" /> : 'Đăng nhập'}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

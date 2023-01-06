@@ -6,22 +6,32 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
-import {ScrollView } from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useDispatch} from 'react-redux';
+import Toast from 'react-native-toast-message';
 import productApi from '../../clients/productApi';
 import HeaderBack from '../../components/header-back/HeaderBack';
 import Loading from '../../components/loading/Loading';
 import COLOR from '../../constants/Color';
 import {PathName} from '../../constants/PathNameScreen';
-import formatPrice from '../../utils';
+import formatPrice, {Toastify} from '../../utils';
+import {addToCart} from '../cart/cartSlice';
+import {useSelector} from 'react-redux';
 
 const DetailsScreen = ({navigation, route}) => {
   const {idProduct, name, title} = route.params;
+  const {
+    user: {user},
+  } = useSelector(state => state.auth);
+  console.log(user);
+
   const [data, setData] = useState();
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
+  const dispatch = useDispatch();
 
   const fetchData = async () => {
     try {
@@ -34,6 +44,31 @@ const DetailsScreen = ({navigation, route}) => {
   useEffect(() => {
     fetchData();
   }, [idProduct]);
+
+  const handleSubmit = () => {
+    console.log(user);
+    const action = addToCart({
+      idProduct: data.idProduct,
+      quantity,
+      idUser: user.idUser,
+    });
+    try {
+      dispatch(action).then(() => {
+        Toast.show({
+          type: 'success',
+          text1: 'Thông báo',
+          text2: 'Thêm vào giỏ hàng thành công 👋',
+        });
+        navigation.navigate(PathName.cart);
+      });
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Lỗi hệ thống :((',
+      });
+    }
+  };
 
   return (
     <React.Fragment>
@@ -87,10 +122,9 @@ const DetailsScreen = ({navigation, route}) => {
 
                 <View style={styles.boxPlus}>
                   <TouchableOpacity
-                  
                     style={styles.iconPlus}
                     onPress={() => {
-                      if(quantity<=1) return
+                      if (quantity <= 1) return;
                       setQuantity(quantity - 1);
                     }}>
                     <Text style={styles.textPlus}>-</Text>
@@ -98,15 +132,18 @@ const DetailsScreen = ({navigation, route}) => {
                   <View style={styles.iconPlus}>
                     <Text style={styles.textPlus}>{quantity}</Text>
                   </View>
-                  <TouchableOpacity style={styles.iconPlus} onPress={() => {
-                    setQuantity(quantity + 1)
-                    console.log("hahh")
-                  }}>
+                  <TouchableOpacity
+                    style={styles.iconPlus}
+                    onPress={() => {
+                      setQuantity(quantity + 1);
+                      console.log('hahh');
+                    }}>
                     <Text style={styles.textPlus}>+</Text>
                   </TouchableOpacity>
 
                   <View style={styles.boxPlus}>
                     <TouchableOpacity
+                      onPress={handleSubmit}
                       style={{
                         backgroundColor: COLOR.blue,
                         padding: 15,

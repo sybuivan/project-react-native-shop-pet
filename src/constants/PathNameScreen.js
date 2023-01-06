@@ -4,4 +4,5 @@ export const PathName = {
   register: 'RegisterScreen',
   listProduct: 'ListProductScreen',
   details: 'DetailsScreen',
+  cart: 'CartScreen',
 };

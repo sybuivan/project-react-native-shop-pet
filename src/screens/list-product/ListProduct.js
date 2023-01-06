@@ -115,6 +115,7 @@ const Card = ({navigation, data, title}) => {
         title: title,
       });
   };
+
   return (
     <View
       style={{

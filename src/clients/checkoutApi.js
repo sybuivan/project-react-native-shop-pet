@@ -1,6 +1,13 @@
 import axiosClient from './axiosClient';
 
 const checkoutApi = {
+  async addToCart(body) {
+    return await axiosClient.post('/add-to-cart', body);
+  },
+
+  async getCartIdUser(idUser) {
+    return await axiosClient.get(`/get-carts/${idUser}`);
+  },
   payMethod(params) {
     const url = '/checkout';
     return axiosClient.post(url, {params: params});

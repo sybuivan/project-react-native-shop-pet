@@ -7,7 +7,6 @@ const authApi = {
     return await axiosClient.post('/register', data);
   },
   login: async data => {
-    console.log('data axios ', data);
     return await axiosClient.post('/login', data);
   },
 };
