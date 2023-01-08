@@ -32,9 +32,8 @@ const xmlMinus = `<svg width="800px" height="800px" viewBox="0 0 24 24" fill="no
 const xmlPlus = `<svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M12 5V19M5 12H19" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`;
-const CartItems = ({cart, navigation, onDelete}) => {
+const CartItems = ({cart, navigation, onDelete, isView}) => {
   const {name, price, thumbnailUrl, quantity, codeCart} = cart;
-  console.log(cart);
   const handleDelete = () => {
     onDelete(codeCart);
   };
@@ -74,30 +73,32 @@ const CartItems = ({cart, navigation, onDelete}) => {
           Số lượng: {quantity}
         </Text>
       </View>
-      <View style={styles.checkboxContainer}>
-        <View style={styles.boxPlus}>
-          <TouchableOpacity
-            style={styles.iconPlus}
-            onPress={() => {
-              if (quantity <= 1) return;
-            }}>
-            <SvgXml width={20} height={20} xml={xmlMinus} />
-          </TouchableOpacity>
-          <View style={styles.iconPlus}>
-            <Text style={styles.textPlus}>{quantity}</Text>
+      {isView && (
+        <View style={styles.checkboxContainer}>
+          <View style={styles.boxPlus}>
+            <TouchableOpacity
+              style={styles.iconPlus}
+              onPress={() => {
+                if (quantity <= 1) return;
+              }}>
+              <SvgXml width={20} height={20} xml={xmlMinus} />
+            </TouchableOpacity>
+            <View style={styles.iconPlus}>
+              <Text style={styles.textPlus}>{quantity}</Text>
+            </View>
+            <TouchableOpacity
+              style={styles.iconPlus}
+              onPress={() => {
+                console.log('hahh');
+              }}>
+              <SvgXml width={20} height={20} xml={xmlPlus} />
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={styles.iconPlus}
-            onPress={() => {
-              console.log('hahh');
-            }}>
-            <SvgXml width={20} height={20} xml={xmlPlus} />
+          <TouchableOpacity onPress={handleDelete}>
+            <SvgXml width={25} height={25} xml={xmldelete} />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={handleDelete}>
-          <SvgXml width={25} height={25} xml={xmldelete} />
-        </TouchableOpacity>
-      </View>
+      )}
     </View>
   );
 };

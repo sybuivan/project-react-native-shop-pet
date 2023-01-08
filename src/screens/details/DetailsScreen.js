@@ -26,7 +26,6 @@ const DetailsScreen = ({navigation, route}) => {
   const {
     user: {user},
   } = useSelector(state => state.auth);
-  console.log(user);
 
   const [data, setData] = useState();
   const [loading, setLoading] = useState(true);

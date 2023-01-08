@@ -1,7 +1,10 @@
 import axios from 'axios';
 
+const dev = 'https://localhost:5000/api';
+const production = 'https://monashop-pet.onrender.com/api';
+
 const axiosClient = axios.create({
-  baseURL: 'https://monashop-pet.onrender.com/api',
+  baseURL: production,
   headers: {
     'Content-Type': 'application/json',
   },

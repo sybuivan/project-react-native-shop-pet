@@ -6,4 +6,7 @@ export const PathName = {
   details: 'DetailsScreen',
   cart: 'CartScreen',
   profile: 'ProfileScreen',
+  checkout: 'CheckoutScreen',
+  stackHomeNavigate: 'StackHomeNavigate',
+  stackCartNavigate: 'StackCartNavigate',
 };

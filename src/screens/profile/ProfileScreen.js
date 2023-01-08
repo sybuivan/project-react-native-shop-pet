@@ -67,7 +67,6 @@ const ProfileScreen = ({navigation}) => {
           <TouchableOpacity
             onPress={() => {
               dispatch(logout());
-              navigation.navigate(PathName.login);
             }}>
             <Text style={styles.itemText}>Đăng xuất</Text>
           </TouchableOpacity>

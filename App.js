@@ -20,6 +20,7 @@ import CartScreen from './src/screens/cart/CartScreen';
 import ProfileScreen from './src/screens/profile/ProfileScreen';
 import {countCartItems} from './src/screens/cart/cartSelector';
 import {toastConfig} from './src/constants/ToastConfig';
+import CheckoutScreen from './src/screens/checkout';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -80,6 +81,19 @@ const StackHomeNavigate = () => {
   );
 };
 
+const StackCartNavigate = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen
+        name={PathName.cart}
+        component={CartScreen}
+        initialParams={{number: 45}}
+      />
+      <Stack.Screen name={PathName.checkout} component={CheckoutScreen} />
+    </Stack.Navigator>
+  );
+};
+
 const TabNavigate = () => {
   const countCart = useSelector(countCartItems);
 
@@ -100,7 +114,7 @@ const TabNavigate = () => {
         },
       }}>
       <Tab.Screen
-        name={PathName.home}
+        name={PathName.stackHomeNavigate}
         component={StackHomeNavigate}
         options={{
           tabBarLabel: ({color}) => (
@@ -119,9 +133,8 @@ const TabNavigate = () => {
         }}
       />
       <Tab.Screen
-        initialParams={{number: 45}}
-        name={PathName.cart}
-        component={CartScreen}
+        name={PathName.stackCartNavigate}
+        component={StackCartNavigate}
         navigationOptions={{
           header: null,
         }}

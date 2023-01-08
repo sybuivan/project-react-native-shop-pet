@@ -74,13 +74,21 @@ const CartScreen = ({navigation, route}) => {
                   cart={cart}
                   onDelete={handleOnDelete}
                   navigation={navigation}
+                  isView={true}
                 />
               ))}
             </View>
           </ScrollView>
           {carts.length > 0 && (
             <View style={styles.boxPay}>
-              <TouchableOpacity style={styles.button} onPress={handleOnDelete}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() =>
+                  navigation.navigate(PathName.checkout, {
+                    carts: carts,
+                    totalPrice: totalPrice,
+                  })
+                }>
                 <Text style={styles.text}>Thanh toán</Text>
               </TouchableOpacity>
             </View>

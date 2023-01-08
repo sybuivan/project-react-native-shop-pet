@@ -13,9 +13,10 @@ const checkoutApi = {
     return axiosClient.post(url, {params: params});
   },
 
-  orderDetails(params) {
+  async orderDetails(params) {
     const url = '/orders/details';
-    return axiosClient.post(url, {params: params});
+    console.log(params);
+    return await axiosClient.post(url, {params: params});
   },
 
   getIdOrder() {
