@@ -24,3 +24,10 @@ export const groupBy = (items, key) =>
     }),
     {},
   );
+export const totalQuantity = arrays => {
+  return arrays.reduce((partialSum, a) => partialSum + a, 0);
+};
+
+export const ramdomNumber = title => {
+  return `${title}-${Math.random() * 100000}`;
+};

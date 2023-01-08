@@ -6,10 +6,12 @@ import {
   View,
   Text,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import CategoryCard from '../../components/category-card/CategoryCard';
 import COLOR from '../../constants/Color';
+import logo from '../../assets/images/logo.jpg';
 
 const dataCategory = [
   {
@@ -48,6 +50,7 @@ const HomeScreen = ({navigation}) => {
   return (
     <React.Fragment>
       <View style={styles.header}>
+        <Image source={logo} style={styles.logo} />
         <Text style={styles.titleHeader}>Trang chủ</Text>
       </View>
 
@@ -76,17 +79,21 @@ const styles = StyleSheet.create({
   list: {
     paddingVertical: 10,
   },
-  header: {
+  logo: {
+    width: 50,
     height: 50,
+    marginRight: 20,
+  },
+  header: {
     backgroundColor: COLOR.while,
-    padding: 10,
-    width: 380,
-    justifyContent: 'center',
-    marginHorizontal: 17,
-    marginBottom: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
   titleHeader: {
-    textAlign: 'center',
     fontWeight: '500',
     color: COLOR.primary,
     fontSize: 20,

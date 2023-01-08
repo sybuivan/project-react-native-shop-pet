@@ -5,4 +5,5 @@ export const PathName = {
   listProduct: 'ListProductScreen',
   details: 'DetailsScreen',
   cart: 'CartScreen',
+  profile: 'ProfileScreen',
 };

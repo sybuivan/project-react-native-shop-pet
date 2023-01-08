@@ -12,7 +12,11 @@ const authSlice = createSlice({
     isLogin: false,
     user: {},
   },
-  reducers: {},
+  reducers: {
+    logout(state) {
+      state.user = null;
+    },
+  },
   extraReducers: builder => {
     builder.addCase(loginUser.fulfilled, (state, action) => {
       console.log(action.payload);
@@ -22,4 +26,5 @@ const authSlice = createSlice({
 });
 
 const {reducer, actions} = authSlice;
+export const {logout} = actions;
 export default reducer;

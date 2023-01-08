@@ -17,7 +17,7 @@ import HeaderBack from '../../components/header-back/HeaderBack';
 import Loading from '../../components/loading/Loading';
 import COLOR from '../../constants/Color';
 import {PathName} from '../../constants/PathNameScreen';
-import formatPrice, {Toastify} from '../../utils';
+import formatPrice, {ramdomNumber, Toastify} from '../../utils';
 import {addToCart} from '../cart/cartSlice';
 import {useSelector} from 'react-redux';
 
@@ -53,13 +53,16 @@ const DetailsScreen = ({navigation, route}) => {
       idUser: user.idUser,
     });
     try {
+      console.log(ramdomNumber(PathName.cart));
       dispatch(action).then(() => {
         Toast.show({
           type: 'success',
           text1: 'Thông báo',
           text2: 'Thêm vào giỏ hàng thành công 👋',
         });
-        navigation.navigate(PathName.cart);
+        navigation.navigate(PathName.cart, {
+          number: ramdomNumber(PathName.cart),
+        });
       });
     } catch (error) {
       Toast.show({

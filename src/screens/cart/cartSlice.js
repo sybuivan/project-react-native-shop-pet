@@ -1,7 +1,7 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import checkoutApi from '../../clients/checkoutApi';
-import {groupBy} from '../../utils';
+import {groupBy, totalQuantity} from '../../utils';
 
 export const addToCart = createAsyncThunk('cart/addToCart', async payload => {
   const response = await checkoutApi.addToCart(payload);
@@ -19,13 +19,26 @@ const cartSlice = createSlice({
   },
   reducers: {},
   extraReducers: builder => {
-    builder.addCase(getCarts.fulfilled, (state, action) => {
-      const newCarts = action.payload;
-      const data = groupBy(newCarts, 'idProduct');
-      console.log('data', data);
-      state.carts = action.payload;
-      state.loading = false;
-    });
+    builder
+      .addCase(getCarts.fulfilled, (state, action) => {
+        const newCarts = action.payload;
+        const data = groupBy(newCarts, 'idProduct');
+        const newProduct = [];
+        for (const [key, value] of Object.entries(data)) {
+          const total = value.map(item => item.quantity);
+          console.log(value);
+          const quantity = total.reduce((partialSum, a) => partialSum + a, 0);
+          newProduct.push({
+            ...value[0],
+            quantity,
+          });
+        }
+        state.carts = newProduct;
+        state.loading = false;
+      })
+      .addCase(getCarts.pending, state => {
+        state.loading = true;
+      });
   },
 });
 

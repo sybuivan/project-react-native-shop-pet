@@ -56,7 +56,6 @@ const LoginScreen = ({navigation}) => {
           text1: 'Thông báo',
           text2: 'Đăng nhập tài khoản thành công 👋',
         });
-        navigation.navigate(PathName.home);
         setLoading(false);
       });
     } catch (error) {

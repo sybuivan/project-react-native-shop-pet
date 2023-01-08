@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import {StyleSheet, View, Text, Image} from 'react-native';
+import {StyleSheet, View, Text, Image, ProgressBarAndroid} from 'react-native';
 import {Provider, useSelector} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {SvgXml} from 'react-native-svg';
@@ -17,6 +17,9 @@ import {PathName} from './src/constants/PathNameScreen';
 import store from './src/redux/store';
 import COLOR from './src/constants/Color';
 import CartScreen from './src/screens/cart/CartScreen';
+import ProfileScreen from './src/screens/profile/ProfileScreen';
+import {countCartItems} from './src/screens/cart/cartSelector';
+import {toastConfig} from './src/constants/ToastConfig';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -50,6 +53,14 @@ const cartxml = `<svg width="800px" height="800px" viewBox="0 -0.5 32 32" fill="
 </defs>
 </svg>`;
 
+const userxml = `<svg width="181px" height="181px" viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+<g id="SVGRepo_bgCarrier" stroke-width="0"/>
+
+<g id="SVGRepo_iconCarrier"> <path d="M5.3163 19.4384C5.92462 18.0052 7.34492 17 9 17H15C16.6551 17 18.0754 18.0052 18.6837 19.4384M16 9.5C16 11.7091 14.2091 13.5 12 13.5C9.79086 13.5 8 11.7091 8 9.5C8 7.29086 9.79086 5.5 12 5.5C14.2091 5.5 16 7.29086 16 9.5ZM22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#f46b10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/> </g>
+
+</svg>`;
+
 const StackNavigate = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
@@ -70,7 +81,7 @@ const StackHomeNavigate = () => {
 };
 
 const TabNavigate = () => {
-  // const countCart = useSelector(countCartItems);
+  const countCart = useSelector(countCartItems);
 
   const customTabBarStyle = {
     activeTintColor: '#0091EA',
@@ -79,19 +90,24 @@ const TabNavigate = () => {
   };
   return (
     <Tab.Navigator
+      activeColor={COLOR.primary}
       options={{headerShown: false}}
       initialRouteName={PathName.home}
       screenOptions={{
         tabBarActiveTintColor: COLOR.primary,
+        tabBarStyle: {
+          height: 60,
+        },
       }}>
       <Tab.Screen
         name={PathName.home}
         component={StackHomeNavigate}
         options={{
-          tabBarLabel: () => (
+          tabBarLabel: ({color}) => (
             <Text
               style={{
                 fontWeight: '600',
+                color: color,
               }}>
               Trang chủ
             </Text>
@@ -103,15 +119,17 @@ const TabNavigate = () => {
         }}
       />
       <Tab.Screen
+        initialParams={{number: 45}}
         name={PathName.cart}
         component={CartScreen}
         navigationOptions={{
           header: null,
         }}
         options={{
-          tabBarLabel: () => (
+          tabBarLabel: ({color}) => (
             <Text
               style={{
+                color: color,
                 fontWeight: '600',
               }}>
               Giỏ hàng
@@ -127,9 +145,33 @@ const TabNavigate = () => {
                     color: COLOR.while,
                     fontWeight: '700',
                   }}>
-                  1
+                  {countCart}
                 </Text>
               </View>
+            </View>
+          ),
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name={PathName.profile}
+        component={ProfileScreen}
+        navigationOptions={{
+          header: null,
+        }}
+        options={{
+          tabBarLabel: ({color}) => (
+            <Text
+              style={{
+                fontWeight: '600',
+                color: color,
+              }}>
+              Tôi
+            </Text>
+          ),
+          tabBarIcon: ({color, size}) => (
+            <View style={styles.cart}>
+              <SvgXml width={30} height={30} xml={userxml} />
             </View>
           ),
           headerShown: false,
@@ -141,7 +183,7 @@ const TabNavigate = () => {
 
 const MainNavigate = () => {
   const {user} = useSelector(state => state.auth);
-  return <>{user.token ? <TabNavigate /> : <StackNavigate />}</>;
+  return <>{user?.token ? <TabNavigate /> : <StackNavigate />}</>;
 };
 
 const App = () => {
@@ -149,14 +191,7 @@ const App = () => {
     <Provider store={store}>
       <Fragment>
         <NavigationContainer>{<MainNavigate />}</NavigationContainer>
-        <Toast
-          text1Style={{
-            fontSize: 20,
-          }}
-          text2Style={{
-            fontSize: 20,
-          }}
-        />
+        <Toast config={toastConfig} />
       </Fragment>
     </Provider>
   );

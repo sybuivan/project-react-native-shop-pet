@@ -22,6 +22,10 @@ const checkoutApi = {
     const url = '/orders/getIdOrder';
     return axiosClient.get(url);
   },
+
+  async deleteCart(id) {
+    return axiosClient.delete(`/delete-cart/${id}`);
+  },
 };
 
 export default checkoutApi;

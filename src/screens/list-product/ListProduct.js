@@ -10,12 +10,16 @@ import {
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {SvgXml} from 'react-native-svg';
+import {useDispatch, useSelector} from 'react-redux';
+import Toast from 'react-native-toast-message';
+
 import productApi from '../../clients/productApi';
 import HeaderBack from '../../components/header-back/HeaderBack';
 import Loading from '../../components/loading/Loading';
 import COLOR from '../../constants/Color';
 import {PathName} from '../../constants/PathNameScreen';
-import formatPrice from '../../utils';
+import formatPrice, {ramdomNumber} from '../../utils';
+import {addToCart} from '../cart/cartSlice';
 
 const xml = `
 <svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" id="svg10041" viewBox="0 0 181.03 147.72" version="1.1">
@@ -107,6 +111,10 @@ const xml = `
 `;
 
 const Card = ({navigation, data, title}) => {
+  const {
+    user: {user},
+  } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
   const onItemPress = idProduct => {
     navigation &&
       navigation.navigate(PathName.details, {
@@ -114,6 +122,32 @@ const Card = ({navigation, data, title}) => {
         name: data.name,
         title: title,
       });
+  };
+
+  const handleSubmit = () => {
+    const action = addToCart({
+      idProduct: data.idProduct,
+      quantity: 1,
+      idUser: user.idUser,
+    });
+    try {
+      dispatch(action).then(() => {
+        Toast.show({
+          type: 'success',
+          text1: 'Thông báo',
+          text2: 'Thêm vào giỏ hàng thành công 👋',
+        });
+        navigation.navigate(PathName.cart, {
+          number: ramdomNumber(PathName.cart),
+        });
+      });
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Lỗi hệ thống :((',
+      });
+    }
   };
 
   return (
@@ -157,7 +191,7 @@ const Card = ({navigation, data, title}) => {
             }}>
             {formatPrice(data.price)}
           </Text>
-          <TouchableOpacity style={styles.iconButton}>
+          <TouchableOpacity style={styles.iconButton} onPress={handleSubmit}>
             <SvgXml width={30} height={30} xml={xml} />
           </TouchableOpacity>
         </View>
