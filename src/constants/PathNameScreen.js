@@ -9,4 +9,7 @@ export const PathName = {
   checkout: 'CheckoutScreen',
   stackHomeNavigate: 'StackHomeNavigate',
   stackCartNavigate: 'StackCartNavigate',
+  stackProfileNavigate: 'StackProfileNavigate',
+  myOrders: 'MyOrders',
+  settings: 'Settings',
 };

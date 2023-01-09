@@ -11,7 +11,7 @@ const HeaderBack = ({onPressBack, title, name}) => {
     <View
       style={{
         backgroundColor: COLOR.while,
-        padding: 20,
+        padding: 5,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
@@ -23,22 +23,11 @@ const HeaderBack = ({onPressBack, title, name}) => {
           backgroundColor: COLOR.while,
           width: 110,
           textAlign: 'center',
-          borderColor: '#c1c1c1',
-          borderWidth: 1,
-          borderStyle: 'dashed',
           borderRadius: 5,
           display: 'flex',
           flexDirection: 'row',
         }}>
         <SvgXml xml={xmlback} width={25} height={25} />
-        <Text
-          style={{
-            paddingLeft: 5,
-            fontSize: 16,
-            fontWeight: '600',
-          }}>
-          Quay lại
-        </Text>
       </TouchableOpacity>
       <View
         style={{

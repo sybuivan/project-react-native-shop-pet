@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {useDispatch, useSelector} from 'react-redux';
+import HeaderBack from '../../components/header-back/HeaderBack';
 import COLOR from '../../constants/Color';
 import {PathName} from '../../constants/PathNameScreen';
 import {logout} from '../auth/authSlice';
@@ -30,6 +31,21 @@ const xmlsetting = `<svg width="800px" height="800px" viewBox="0 0 24 24" fill="
 </svg>`;
 const xmlcheck = `<svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" id="check-mark-square-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><polyline id="primary" points="21 5 12 14 8 10" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline><path id="primary-2" data-name="primary" d="M21,11v9a1,1,0,0,1-1,1H4a1,1,0,0,1-1-1V4A1,1,0,0,1,4,3H16" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></svg>`;
 
+export const HeaderAccount = ({user}) => {
+  const image = require('../../assets/images/avt-df.png');
+
+  return (
+    <View style={styles.boxHeader}>
+      <View style={styles.image}>
+        <ImageBackground source={image} style={styles.imageBk} />
+      </View>
+      <View>
+        <Text style={styles.text}>{user.fullName}</Text>
+        <Text style={styles.textMail}>{user.email}</Text>
+      </View>
+    </View>
+  );
+};
 const ProfileScreen = ({navigation}) => {
   const image = require('../../assets/images/avt-df.png');
   const {
@@ -38,30 +54,23 @@ const ProfileScreen = ({navigation}) => {
   const dispatch = useDispatch();
   return (
     <React.Fragment>
-      <View style={styles.boxHeader}>
-        <View style={styles.image}>
-          <ImageBackground source={image} style={styles.imageBk} />
-        </View>
-        <View>
-          <Text style={styles.text}>{user.fullName}</Text>
-          <Text style={styles.textMail}>{user.email}</Text>
-        </View>
-      </View>
+      <HeaderAccount user={user} />
       <View style={styles.list}>
-        <TouchableOpacity style={styles.item}>
+        <TouchableOpacity
+          style={styles.item}
+          onPress={() => navigation.navigate(PathName.settings)}>
           <SvgXml height={25} width={25} xml={xmlsetting} />
 
           <Text style={styles.itemText}>Thiết lập tài khoản</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.item}>
+        <TouchableOpacity
+          style={styles.item}
+          onPress={() => navigation.navigate(PathName.myOrders)}>
           <SvgXml height={25} width={25} xml={xmlcheck} />
 
           <Text style={styles.itemText}>Đơn hàng của tôi</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.item}>
-          <SvgXml height={25} width={25} xml={xmlbook} />
-          <Text style={styles.itemText}>Đơn hàng đã giao</Text>
-        </TouchableOpacity>
+
         <TouchableOpacity style={styles.item}>
           <SvgXml height={25} width={25} xml={xmllogout} />
           <TouchableOpacity

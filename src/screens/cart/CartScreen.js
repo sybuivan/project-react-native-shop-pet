@@ -30,9 +30,12 @@ const CartScreen = ({navigation, route}) => {
     dispatch(getCarts(user.idUser));
   }, [number]);
 
-  const handleOnDelete = async id => {
+  const handleOnDelete = async idProduct => {
     try {
-      const res = await checkoutApi.deleteCart(id);
+      const res = await checkoutApi.deleteCart({
+        idUser: user.idUser,
+        idProduct,
+      });
       dispatch(getCarts(user.idUser));
     } catch (error) {}
   };

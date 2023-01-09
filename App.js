@@ -21,6 +21,8 @@ import ProfileScreen from './src/screens/profile/ProfileScreen';
 import {countCartItems} from './src/screens/cart/cartSelector';
 import {toastConfig} from './src/constants/ToastConfig';
 import CheckoutScreen from './src/screens/checkout';
+import MyOrders from './src/screens/myOrders';
+import SettingsAccount from './src/screens/settingsAccount';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -77,6 +79,16 @@ const StackHomeNavigate = () => {
       <Stack.Screen name={PathName.home} component={HomeScreen} />
       <Stack.Screen name={PathName.listProduct} component={ListProduct} />
       <Stack.Screen name={PathName.details} component={DetailsScreen} />
+    </Stack.Navigator>
+  );
+};
+
+const StackProfileNavigate = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name={PathName.profile} component={ProfileScreen} />
+      <Stack.Screen name={PathName.myOrders} component={MyOrders} />
+      <Stack.Screen name={PathName.settings} component={SettingsAccount} />
     </Stack.Navigator>
   );
 };
@@ -167,8 +179,8 @@ const TabNavigate = () => {
         }}
       />
       <Tab.Screen
-        name={PathName.profile}
-        component={ProfileScreen}
+        name={PathName.stackProfileNavigate}
+        component={StackProfileNavigate}
         navigationOptions={{
           header: null,
         }}
