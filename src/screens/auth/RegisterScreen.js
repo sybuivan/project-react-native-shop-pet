@@ -5,17 +5,57 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
+import {Controller, useForm} from 'react-hook-form';
 
 import logo from '../../assets/images/logo.jpg';
+import authApi from '../../clients/authApi';
 import COLOR from '../../constants/Color';
+import {PathName} from '../../constants/PathNameScreen';
 
 const RegisterScreen = ({navigation}) => {
-  const [text, onChangeText] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const {
+    handleSubmit,
+    control,
+    reset,
 
+    formState: {errors},
+  } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    mode: 'onChange',
+  });
+
+  const handleOnSubmit = async data => {
+    try {
+      const res = await authApi.register({
+        email: data.email,
+        password: data.password,
+        fullName: data.email,
+      });
+      navigation.navigate(PathName.login);
+      ToastAndroid.showWithGravityAndOffset(
+        'Đăng ký tài khoản thành công',
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50,
+      );
+    } catch (error) {
+      ToastAndroid.showWithGravityAndOffset(
+        error.msg || 'Đăng ký tài khoản không thành công',
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50,
+      );
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.blockBackground} />
@@ -29,41 +69,84 @@ const RegisterScreen = ({navigation}) => {
             <SafeAreaView>
               <View style={styles.boxInput}>
                 <Text>Email</Text>
-                <TextInput
-                  style={styles.input}
-                  onChangeText={onChangeText}
-                  value={text}
-                  keyboardType="number-pad"
+                <Controller
+                  control={control}
+                  errors={errors}
+                  render={({
+                    field: {onChange, onBlur, value},
+                    fieldState: {error, invalid},
+                  }) => (
+                    <>
+                      <TextInput
+                        style={styles.input}
+                        onBlur={onBlur}
+                        onChangeText={value => onChange(value)}
+                        value={value}
+                      />
+                    </>
+                  )}
+                  name="email"
+                  rules={{required: true}}
                 />
               </View>
+
               <View style={styles.boxInput}>
                 <Text>Nhập mật khẩu</Text>
-                <TextInput
-                  style={styles.input}
-                  onChangeText={setPassword}
-                  value={password}
+                <Controller
+                  control={control}
+                  render={({
+                    field: {onChange, onBlur, value},
+                    fieldState: {error, invalid},
+                  }) => (
+                    <>
+                      <TextInput
+                        onBlur={onBlur}
+                        style={styles.input}
+                        onChangeText={value => onChange(value)}
+                        value={value}
+                        secureTextEntry={true}
+                      />
+                    </>
+                  )}
+                  name="password"
+                  rules={{required: true}}
                 />
               </View>
               <View style={styles.boxInput}>
                 <Text>Nhập lại mật khẩu</Text>
-                <TextInput
-                  style={styles.input}
-                  onChangeText={setPassword}
-                  value={password}
+                <Controller
+                  control={control}
+                  render={({
+                    field: {onChange, onBlur, value},
+                    fieldState: {error, invalid},
+                  }) => (
+                    <>
+                      <TextInput
+                        onBlur={onBlur}
+                        style={styles.input}
+                        onChangeText={value => onChange(value)}
+                        value={value}
+                        secureTextEntry={true}
+                      />
+                    </>
+                  )}
+                  name="re-password"
+                  rules={{required: true}}
                 />
               </View>
             </SafeAreaView>
           </View>
 
           <View>
-            <TouchableOpacity style={styles.buttonLogin}>
+            <TouchableOpacity
+              style={styles.buttonLogin}
+              onPress={handleSubmit(handleOnSubmit)}>
               <Text style={styles.textButton}>Đăng ký</Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
 
-      {/* View sign up */}
       <View style={styles.boxSignUp}>
         <View>
           <Text style={styles.text}>Bạn đã có tài khoản?</Text>

@@ -10,12 +10,16 @@ import {
   TouchableOpacity,
   View,
   ToastAndroid,
+  ActivityIndicator,
 } from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import Toast from 'react-native-toast-message';
 
 import * as yup from 'yup';
 import logo from '../../assets/images/logo.jpg';
-import authApi from '../../clients/authApi';
 import COLOR from '../../constants/Color';
+import {PathName} from '../../constants/PathNameScreen';
+import {loginUser} from './authSlice';
 
 const LoginScreen = ({navigation}) => {
   // const schema = yup.object().shape({
@@ -25,6 +29,9 @@ const LoginScreen = ({navigation}) => {
   //     .email('Please enter a valid your address email'),
   //   password: yup.string().required('Please enter your password'),
   // });
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
 
   const {
     handleSubmit,
@@ -34,36 +41,30 @@ const LoginScreen = ({navigation}) => {
     formState: {errors},
   } = useForm({
     defaultValues: {
-      email: '',
-      password: '',
+      email: 'ngosontung@gmail.com',
+      password: 'ngosontung',
     },
     mode: 'onChange',
   });
 
   const handleOnSubmit = async data => {
-    Alert.alert(JSON.stringify(data));
-    // try {
-    //   await authApi.login(data);
-    //   ToastAndroid.showWithGravityAndOffset(
-    //     'Đăng nhập thành công!',
-    //     ToastAndroid.LONG,
-    //     ToastAndroid.TOP,
-    //     25,
-    //     50,
-    //   );
-    //   reset({email: '', password: ''});
-    //   navigation.navigate('RegisterScreen');
-    // } catch (error) {
-    //   Alert.alert(JSON.stringify(error));
-
-    //   ToastAndroid.showWithGravityAndOffset(
-    //     'Đăng nhập thất bại!',
-    //     ToastAndroid.LONG,
-    //     ToastAndroid.TOP,
-    //     25,
-    //     50,
-    //   );
-    // }
+    try {
+      setLoading(true);
+      dispatch(loginUser(data)).then(() => {
+        Toast.show({
+          type: 'success',
+          text1: 'Thông báo',
+          text2: 'Đăng nhập tài khoản thành công 👋',
+        });
+        setLoading(false);
+      });
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Đăng nhập tài khoản không thất bại 👋',
+      });
+    }
   };
 
   return (
@@ -129,7 +130,9 @@ const LoginScreen = ({navigation}) => {
             <TouchableOpacity
               style={styles.buttonLogin}
               onPress={handleSubmit(handleOnSubmit)}>
-              <Text style={styles.textButton}>Đăng nhập</Text>
+              <Text style={styles.textButton}>
+                {loading ? <ActivityIndicator size="small" /> : 'Đăng nhập'}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -142,7 +145,7 @@ const LoginScreen = ({navigation}) => {
         </View>
         <TouchableOpacity
           style={styles.buttonSign}
-          onPress={() => navigation.navigate('RegisterScreen')}>
+          onPress={() => navigation.navigate(PathName.register)}>
           <Text style={styles.textButton}>Đăng ký</Text>
         </TouchableOpacity>
       </View>
