@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import {Controller, useForm} from 'react-hook-form';
+import Toast from 'react-native-toast-message';
 
 import logo from '../../assets/images/logo.jpg';
 import authApi from '../../clients/authApi';
@@ -39,21 +40,17 @@ const RegisterScreen = ({navigation}) => {
         fullName: data.email,
       });
       navigation.navigate(PathName.login);
-      ToastAndroid.showWithGravityAndOffset(
-        'Đăng ký tài khoản thành công',
-        ToastAndroid.LONG,
-        ToastAndroid.TOP,
-        25,
-        50,
-      );
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Đăng ký tài khoản thành công',
+      });
     } catch (error) {
-      ToastAndroid.showWithGravityAndOffset(
-        error.msg || 'Đăng ký tài khoản không thành công',
-        ToastAndroid.LONG,
-        ToastAndroid.TOP,
-        25,
-        50,
-      );
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Đăng ký tài khoản không thành công',
+      });
     }
   };
   return (

@@ -33,9 +33,9 @@ const xmlPlus = `<svg width="800px" height="800px" viewBox="0 0 24 24" fill="non
 <path d="M12 5V19M5 12H19" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`;
 const CartItems = ({cart, navigation, onDelete, isView}) => {
-  const {name, price, thumbnailUrl, quantity, codeCart} = cart;
+  const {name, price, thumbnailUrl, quantity, codeCart, idProduct} = cart;
   const handleDelete = () => {
-    onDelete(codeCart);
+    onDelete(idProduct);
   };
 
   return (

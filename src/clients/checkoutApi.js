@@ -24,8 +24,8 @@ const checkoutApi = {
     return axiosClient.get(url);
   },
 
-  async deleteCart(id) {
-    return axiosClient.delete(`/delete-cart/${id}`);
+  async deleteCart(params) {
+    return axiosClient.delete(`/delete-cart`, {params});
   },
 };
 
