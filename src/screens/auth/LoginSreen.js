@@ -20,6 +20,7 @@ import logo from '../../assets/images/logo.jpg';
 import COLOR from '../../constants/Color';
 import {PathName} from '../../constants/PathNameScreen';
 import {loginUser} from './authSlice';
+import {getCarts} from '../cart/cartSlice';
 
 const LoginScreen = ({navigation}) => {
   // const schema = yup.object().shape({
@@ -41,7 +42,7 @@ const LoginScreen = ({navigation}) => {
     formState: {errors},
   } = useForm({
     defaultValues: {
-      email: 'ngosontung@gmail.com',
+      email: 'buivansy@gmail.com',
       password: 'ngosontung',
     },
     mode: 'onChange',
@@ -50,12 +51,14 @@ const LoginScreen = ({navigation}) => {
   const handleOnSubmit = async data => {
     try {
       setLoading(true);
-      dispatch(loginUser(data)).then(() => {
+      dispatch(loginUser(data)).then(user => {
         Toast.show({
           type: 'success',
           text1: 'Thông báo',
           text2: 'Đăng nhập tài khoản thành công 👋',
         });
+        dispatch(getCarts(user.payload.user.idUser));
+
         setLoading(false);
       });
     } catch (error) {

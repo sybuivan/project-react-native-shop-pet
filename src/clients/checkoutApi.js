@@ -15,7 +15,6 @@ const checkoutApi = {
 
   async orderDetails(params) {
     const url = '/orders/details';
-    console.log(params);
     return await axiosClient.post(url, {params: params});
   },
 
@@ -26,6 +25,16 @@ const checkoutApi = {
 
   async deleteCart(params) {
     return axiosClient.delete(`/delete-cart`, {params});
+  },
+
+  async getOrdersUser(idUser, params) {
+    return axiosClient.get(`/get-order-user/${idUser}`, {params});
+  },
+  async getOrdersDetals(idOrder) {
+    return axiosClient.get(`/get-order-details/${idOrder}`);
+  },
+  async deleteOrder(idOrder) {
+    return axiosClient.delete(`/get-order-details/${idOrder}`);
   },
 };
 

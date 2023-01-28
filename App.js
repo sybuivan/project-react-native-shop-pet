@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
 import {StyleSheet, View, Text, Image, ProgressBarAndroid} from 'react-native';
-import {Provider, useSelector} from 'react-redux';
+import {Provider, useDispatch, useSelector} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {SvgXml} from 'react-native-svg';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -23,6 +23,7 @@ import {toastConfig} from './src/constants/ToastConfig';
 import CheckoutScreen from './src/screens/checkout';
 import MyOrders from './src/screens/myOrders';
 import SettingsAccount from './src/screens/settingsAccount';
+import {getCarts} from './src/screens/cart/cartSlice';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -102,6 +103,7 @@ const StackCartNavigate = () => {
         initialParams={{number: 45}}
       />
       <Stack.Screen name={PathName.checkout} component={CheckoutScreen} />
+      {/* <Stack.Screen name={PathName.settings} component={SettingsAccount} /> */}
     </Stack.Navigator>
   );
 };

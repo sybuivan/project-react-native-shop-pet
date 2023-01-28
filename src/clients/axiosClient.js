@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const dev = 'https://localhost:5000/api';
+const dev = 'http://192.168.1.5:5000/api';
 const production = 'https://monashop-pet.onrender.com/api';
 
 const axiosClient = axios.create({
-  baseURL: production,
+  baseURL: dev,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -34,7 +34,7 @@ axiosClient.interceptors.response.use(
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     // const {msg} = error.response
-    console.log('messageError', error);
+    console.log('messageError', error.message);
     return Promise.reject(error);
   },
 );

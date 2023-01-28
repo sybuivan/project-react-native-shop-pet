@@ -46,6 +46,7 @@ const RegisterScreen = ({navigation}) => {
         text2: 'Đăng ký tài khoản thành công',
       });
     } catch (error) {
+      console.log(error);
       Toast.show({
         type: 'error',
         text1: 'Thông báo',
