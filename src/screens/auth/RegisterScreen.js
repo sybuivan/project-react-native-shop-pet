@@ -39,7 +39,6 @@ const RegisterScreen = ({navigation}) => {
         password: data.password,
         fullName: data.email,
       });
-      console.log(res);
       navigation.navigate(PathName.login);
       Toast.show({
         type: 'error',

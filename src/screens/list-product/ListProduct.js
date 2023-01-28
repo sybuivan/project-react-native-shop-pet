@@ -200,7 +200,6 @@ const Card = ({navigation, data, title}) => {
 
 const ListProduct = ({navigation, route}) => {
   const {title, id} = route.params;
-  console.log('Id', id);
   const [loading, setLoading] = useState(true);
   const [dataProducts, setDataProduct] = useState([]);
 

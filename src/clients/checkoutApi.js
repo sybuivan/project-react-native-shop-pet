@@ -15,7 +15,6 @@ const checkoutApi = {
 
   async orderDetails(params) {
     const url = '/orders/details';
-    console.log(params);
     return await axiosClient.post(url, {params: params});
   },
 

@@ -25,7 +25,6 @@ const SettingsAccount = ({navigation}) => {
   const {
     user: {user},
   } = useSelector(state => state.auth);
-  console.log('users', user);
 
   useEffect(() => {
     if (!address) {
@@ -52,7 +51,6 @@ const SettingsAccount = ({navigation}) => {
         address,
         idUser: user.idUser,
       });
-      console.log(res.data.user);
       dispatch(setUser(res.data.user));
       Toast.show({
         type: 'success',

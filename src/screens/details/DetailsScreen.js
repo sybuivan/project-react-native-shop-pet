@@ -51,7 +51,6 @@ const DetailsScreen = ({navigation, route}) => {
       idUser: user.idUser,
     });
     try {
-      console.log(ramdomNumber(PathName.cart));
       dispatch(action).then(() => {
         Toast.show({
           type: 'success',
