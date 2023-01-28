@@ -39,6 +39,7 @@ const RegisterScreen = ({navigation}) => {
         password: data.password,
         fullName: data.email,
       });
+      console.log(res);
       navigation.navigate(PathName.login);
       Toast.show({
         type: 'error',
@@ -46,6 +47,7 @@ const RegisterScreen = ({navigation}) => {
         text2: 'Đăng ký tài khoản thành công',
       });
     } catch (error) {
+      console.log(error);
       Toast.show({
         type: 'error',
         text1: 'Thông báo',

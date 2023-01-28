@@ -13,13 +13,14 @@ import HeaderBack from '../../components/header-back/HeaderBack';
 import Loading from '../../components/loading/Loading';
 import COLOR from '../../constants/Color';
 import {PathName} from '../../constants/PathNameScreen';
-import formatPrice from '../../utils';
+import formatPrice, {ramdomNumber} from '../../utils';
 import CartItems from './CartItems';
 import {totalPriceCartItems} from './cartSelector';
 import {getCarts} from './cartSlice';
 
 const CartScreen = ({navigation, route}) => {
   const {number} = route.params;
+  const [render, setRender] = useState(() => ramdomNumber());
   const totalPrice = useSelector(totalPriceCartItems);
   const {carts, loading} = useSelector(state => state.cart);
   const {
@@ -28,7 +29,7 @@ const CartScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(getCarts(user.idUser));
-  }, [number]);
+  }, [render]);
 
   const handleOnDelete = async idProduct => {
     try {

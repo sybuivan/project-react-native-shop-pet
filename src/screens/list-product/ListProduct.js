@@ -19,7 +19,7 @@ import Loading from '../../components/loading/Loading';
 import COLOR from '../../constants/Color';
 import {PathName} from '../../constants/PathNameScreen';
 import formatPrice, {ramdomNumber} from '../../utils';
-import {addToCart} from '../cart/cartSlice';
+import {addToCart, getCarts} from '../cart/cartSlice';
 
 const xml = `
 <svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" id="svg10041" viewBox="0 0 181.03 147.72" version="1.1">
@@ -137,9 +137,7 @@ const Card = ({navigation, data, title}) => {
           text1: 'Thông báo',
           text2: 'Thêm vào giỏ hàng thành công 👋',
         });
-        navigation.navigate(PathName.cart, {
-          number: ramdomNumber(PathName.cart),
-        });
+        dispatch(getCarts(user.idUser));
       });
     } catch (error) {
       Toast.show({

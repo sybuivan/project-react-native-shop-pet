@@ -27,6 +27,16 @@ const checkoutApi = {
   async deleteCart(params) {
     return axiosClient.delete(`/delete-cart`, {params});
   },
+
+  async getOrdersUser(idUser, params) {
+    return axiosClient.get(`/get-order-user/${idUser}`, {params});
+  },
+  async getOrdersDetals(idOrder) {
+    return axiosClient.get(`/get-order-details/${idOrder}`);
+  },
+  async deleteOrder(idOrder) {
+    return axiosClient.delete(`/get-order-details/${idOrder}`);
+  },
 };
 
 export default checkoutApi;

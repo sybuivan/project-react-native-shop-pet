@@ -30,27 +30,31 @@ const CheckoutScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
 
   const handleOnSubmit = async () => {
-    const address = 'Lac Son - Gio Son - Gio Linh - Quang Tri';
-
     try {
       const params = {
         totalPrice,
-        address,
+        address: user.address,
         userId: user.idUser,
       };
       await checkoutApi.payMethod(params);
       const res = await checkoutApi.getIdOrder();
       if (res) {
         const idOrder = res.data.result[0].idOrder;
-        console.log(idOrder);
         await checkoutApi
-          .orderDetails({cartList: carts, idOrder: idOrder})
+          .orderDetails({
+            cartList: carts,
+            idOrder: idOrder,
+            idUser: user.idUser,
+          })
           .then(() => {
             Toast.show({
               type: 'success',
               text1: 'Thông báo',
               text2: 'Đơn hàng xác nhận thành công 👋',
             });
+            dispatch(getCarts(user.idUser));
+
+            navigation.navigate(PathName.cart);
           });
       }
     } catch (error) {
@@ -62,11 +66,14 @@ const CheckoutScreen = ({navigation, route}) => {
     }
   };
 
+  if (!user.address || !user.phone)
+    return navigation.navigate(PathName.settings);
+
   return (
     <React.Fragment>
       <HeaderBack
         title={`Tiến hành xác nhận`}
-        name={PathName.home}
+        name={PathName.cart}
         onPressBack={name => navigation.navigate(name)}
       />
       {loading ? (
@@ -144,7 +151,7 @@ const CheckoutScreen = ({navigation, route}) => {
                     marginLeft: 10,
                     color: COLOR.black,
                   }}>
-                  {user?.phone || 'Lac Son - Gio Son - Gio Linh - Quang Tri'}
+                  {user?.address || 'Lac Son - Gio Son - Gio Linh - Quang Tri'}
                 </Text>
               </View>
             </View>

@@ -26,7 +26,6 @@ const cartSlice = createSlice({
         const newProduct = [];
         for (const [key, value] of Object.entries(data)) {
           const total = value.map(item => item.quantity);
-          console.log(value);
           const quantity = total.reduce((partialSum, a) => partialSum + a, 0);
           newProduct.push({
             ...value[0],
